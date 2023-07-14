@@ -1,5 +1,5 @@
 class STRectsDrawing {
-  constructor(trial, trialNumber, Size, nums, onTargetClicked) {
+  constructor(trial, trialNumber, Size, personId, nums, onTargetClicked) {
     this.shape = trial.shape;
     this.startClicked = false;
     this.isTargetClicked = false;
@@ -17,6 +17,15 @@ class STRectsDrawing {
     this.handleCanvasClick = this.handleCanvasClick.bind(this);
     this.trialNumber = trialNumber;
     this.intDevice = trial.intDevice;
+    this.personId = personId; //for each person a unique id
+  }
+
+  generatePersonId() {
+    const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+    const randomLetter = alphabet[Math.floor(Math.random() * alphabet.length)];
+    const randomNumber = Math.floor(Math.random() * 100);
+    const uniqueId = randomLetter + randomNumber.toString().padStart(2, '0');
+    return uniqueId;
   }
 
   showRects() {
@@ -184,7 +193,10 @@ class STRectsDrawing {
   printToConsole(){
     console.log(
       "Information from Drawing: " +
-        "Trial Number: " + 
+
+        "Person ID: " +
+        this.personId +
+        " | Trial Number: " + 
         this.trialNumber +
         " | Trial ID: " +
         this.trialId +

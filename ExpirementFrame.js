@@ -2,10 +2,19 @@ class ExperimentFrame {
   constructor() {
     this.blockNumber = 1;
     this.trialNumber = 1;
+    this.personId = this.generatePersonId(); 
     this.experiment = new Experiment();
     this.totalBlocks = this.experiment.getNumBlocks(); // Track the total number of blocks
     // Set the number of trials per break
     this.trialsPerBreak = 3;
+  }
+
+  generatePersonId() {
+    const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+    const randomLetter = alphabet[Math.floor(Math.random() * alphabet.length)];
+    const randomNumber = Math.floor(Math.random() * 100);
+    const uniqueId = randomLetter + randomNumber.toString().padStart(2, '0');
+    return uniqueId;
   }
 
   // Show only the target and start rectangles on the screen
@@ -17,7 +26,7 @@ class ExperimentFrame {
       this.printAllTrials();
     }
 
-    const STRectDrawing = new STRectsDrawing(trial, this.trialNumber, this.experiment.rectSize, this.experiment.numRects, () => {
+    const STRectDrawing = new STRectsDrawing(trial, this.trialNumber, this.experiment.rectSize, this.personId, this.experiment.numRects,  () => {
       this.trialCompleted();
     });
 
