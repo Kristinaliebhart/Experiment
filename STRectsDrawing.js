@@ -184,9 +184,10 @@ class STRectsDrawing {
           );
           context.fill();
         }
+        this.logData();
         this.onTargetClicked();
         this.isTargetClicked = true;
-        this.logData();
+       
       }
 
     }
@@ -198,12 +199,15 @@ class STRectsDrawing {
     const data = {
       trialNumber: this.trialNumber,
       personId: this.personId,
+      trialDirection: this.trialDirection,
       startIndex: this.startIndex,
       targetIndex: this.targetIndex,
       targetWidth: this.targetWidth,
       targetHeight: this.targetHeight,
       shape: this.shape,
       intDevice: this.intDevice,
+      amplitude: this.amplitude
+
     };
 
     this.loggedData.push(data); // Daten zum Array hinzufügen
