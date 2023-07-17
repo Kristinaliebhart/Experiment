@@ -7,7 +7,7 @@ class ExperimentFrame {
     this.experiment = new Experiment();
     this.totalBlocks = this.experiment.getNumBlocks(); // Track the total number of blocks
     // Set the number of trials per break
-    this.trialsPerBreak = 2;
+    this.trialsPerBreak = 22;
   }
 
   generatePersonId() {
