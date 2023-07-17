@@ -1,11 +1,12 @@
 class STRectsDrawing {
-  constructor(trial, trialNumber, Size, personId, nums, onTargetClicked) {
+  constructor(trial, trialNumber, Size, personId, nums, loggedData, onTargetClicked) {
     this.shape = trial.shape;
     this.startClicked = false;
     this.isTargetClicked = false;
     this.startIndex = trial.startIndex;
     this.targetIndex = trial.targetIndex;
     this.nums = nums;
+    this.loggedData = loggedData;
     this.amplitude = trial.amplitude;
     this.startSize = trial.startSize;
     this.targetWidth = trial.targetWidth;
@@ -185,9 +186,27 @@ class STRectsDrawing {
         }
         this.onTargetClicked();
         this.isTargetClicked = true;
+        this.logData();
       }
 
     }
+
+   
+  }
+
+  logData() {
+    const data = {
+      trialNumber: this.trialNumber,
+      personId: this.personId,
+      startIndex: this.startIndex,
+      targetIndex: this.targetIndex,
+      targetWidth: this.targetWidth,
+      targetHeight: this.targetHeight,
+      shape: this.shape,
+      intDevice: this.intDevice,
+    };
+
+    this.loggedData.push(data); // Daten zum Array hinzufügen
   }
   
   printToConsole(){

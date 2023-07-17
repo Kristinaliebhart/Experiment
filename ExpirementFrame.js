@@ -2,11 +2,12 @@ class ExperimentFrame {
   constructor() {
     this.blockNumber = 1;
     this.trialNumber = 1;
+    this.loggedData = [];
     this.personId = this.generatePersonId(); 
     this.experiment = new Experiment();
     this.totalBlocks = this.experiment.getNumBlocks(); // Track the total number of blocks
     // Set the number of trials per break
-    this.trialsPerBreak = 22;
+    this.trialsPerBreak = 2;
   }
 
   generatePersonId() {
@@ -27,7 +28,7 @@ class ExperimentFrame {
       this.printAllTrials();
     }
 
-    const STRectDrawing = new STRectsDrawing(trial, this.trialNumber, this.experiment.rectSize, this.personId, this.experiment.numRects,  () => {
+    const STRectDrawing = new STRectsDrawing(trial, this.trialNumber, this.experiment.rectSize, this.personId, this.experiment.numRects, this.loggedData,  () => {
       this.trialCompleted();
     });
 
@@ -74,20 +75,23 @@ class ExperimentFrame {
 
   trialCompleted() {
     const currentBlock = this.experiment.getBlock(this.blockNumber);
-
+  
     if (currentBlock) {
       if (currentBlock.hasNext(this.trialNumber)) {
         this.getNextTrial();
-      } else if (this.experiment.hasNext(this.blockNumber)) {
+      } else if (this.blockNumber !== this.totalBlocks) {
         this.getNextBlock();
       } else {
-        // Last trial and block completed
+        // Letzter Block und letzter Trial abgeschlossen
         this.experimentFinished();
       }
     } else {
-      console.error("Invalid block number:", this.blockNumber);
+      console.error("Ungültige Blocknummer:", this.blockNumber);
     }
   }
+
+   
+  
 
   getNextTrial() {
     this.trialNumber++;
@@ -112,14 +116,18 @@ class ExperimentFrame {
   }
 
   experimentFinished() {
-    // Check if it's the last block
     const isLastBlock = this.blockNumber === this.totalBlocks;
-
+  
     if (isLastBlock) {
-      
-      // Close the browser window
-      window.close();
-  }
+      if (this.loggedData.length > 0) {
+        console.log(this.loggedData); // Überprüfen Sie, ob das Array Daten enthält
+        this.generateCSVFile();
+        alert("Die Aufgaben sind abgeschlossen. Das CSV-Datei-Generierungsfenster wird angezeigt. Bitte schließen Sie das Fenster manuell.");
+      } else {
+        alert("Es liegen keine Daten zum Generieren der CSV-Datei vor.");
+      }
+    }
+ 
   }
 
   getTotalTrials() {
@@ -148,6 +156,41 @@ class ExperimentFrame {
         console.log(trial);
       }
     }
+  }
+
+  convertToCSV(data) {
+    const headers = Object.keys(data[0]).join(",");
+    const rows = data.map(obj => {
+      const values = Object.values(obj).map(value => {
+        if (typeof value === "string") {
+          return `"${value}"`; // Wrap string values in quotes
+        }
+        return value;
+      });
+      return values.join(",");
+    });
+    return `${headers}\n${rows.join("\n")}`;
+  }
+
+   
+  
+  generateCSVFile() {
+    const csv = this.convertToCSV(this.loggedData);
+
+
+    // Create a Blob with the CSV data
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+
+    // Create a download URL for the Blob
+    const url = URL.createObjectURL(blob);
+
+    // Create a link element and set its attributes
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "task_data.csv";
+
+    // Simulate a click on the link element to trigger the download
+    link.click();
   }
 
 }
