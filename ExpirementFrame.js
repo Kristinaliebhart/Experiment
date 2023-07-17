@@ -34,7 +34,9 @@ class ExperimentFrame {
     STRectDrawing.showRects();
 
     // Check if it's time for a break
-        if (this.trialNumber % this.trialsPerBreak === 0) {
+    if (this.trialNumber % this.trialsPerBreak === 1 && this.trialNumber !== 1)
+
+        {
     // Display the break window
         this.displayBreakWindow(); 
         }
@@ -123,7 +125,9 @@ class ExperimentFrame {
   }
 
   getRemainingTrials(){
-    const remainingTrialsToBreak = this.trialsPerBreak - (this.trialNumber % this.trialsPerBreak);
+    //const remainingTrialsToBreak = this.trialsPerBreak - (this.trialNumber % this.trialsPerBreak);
+    const remainingTrialsToBreak = this.trialsPerBreak - ((this.trialNumber - 1) % this.trialsPerBreak);
+
     return remainingTrialsToBreak;
   }
 
