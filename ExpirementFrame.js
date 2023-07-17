@@ -19,6 +19,7 @@ class ExperimentFrame {
 
   // Show only the target and start rectangles on the screen
   showTrial() {
+    
     const trial = this.experiment.getBlock(this.blockNumber).getTrial(this.trialNumber);
     if (!this.printedFirstBlock) {
 
@@ -29,6 +30,12 @@ class ExperimentFrame {
     const STRectDrawing = new STRectsDrawing(trial, this.trialNumber, this.experiment.rectSize, this.personId, this.experiment.numRects,  () => {
       this.trialCompleted();
     });
+
+    //add time out that canvas can be centered
+    setTimeout(() => {
+      this.showIndexes();
+      STRectDrawing.showRects();
+    }, 50);
 
     this.showIndexes();
     STRectDrawing.showRects();
