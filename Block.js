@@ -11,11 +11,14 @@ class Block {
     this.startSize = startSize;
     this.numRects = numRects;
     this.rectsize = rectsize;
-    this.trialId = 1; // Initialize the trial ID
+    this.trialId = 0; // Initialize the trial ID
 
     this.currentstartIndex = null;
     this.currentTargetIndex = null;
     this.trialsNum = this.targetWidth.length * this.trialDirection.length * this.amplitude.length;
+   
+
+
     this.usedIndices = [];
     this.rectIndices = [];
     for (let i = 0; i < this.numRects; i++) {
@@ -71,6 +74,35 @@ class Block {
 // return trial
   getTrial(trialNumber) {
     return this.trials[trialNumber - 1];
+  }
+  generateTrials() {
+
+   //check and remove duplicates
+    const uniqueTrials = this.removeDuplicates(this.trials);
+
+    // shuffle trials
+    this.shuffleArray(uniqueTrials);
+    this.trials = uniqueTrials;
+  }
+
+  removeDuplicates(trials) {
+    const uniqueTrials = [];
+    const trialsSet = new Set();
+
+    for (const trial of trials) {
+      const trialKey = this.getTrialKey(trial);
+
+      if (!trialsSet.has(trialKey)) {
+        uniqueTrials.push(trial);
+        trialsSet.add(trialKey);
+      }
+    }
+
+    return uniqueTrials;
+  }
+
+  getTrialKey(trial) {
+    return `${trial.startIndex}-${trial.targetIndex}-${trial.startSize}-${trial.targetWidth}-${trial.targetHeight}-${trial.amplitude}`;
   }
 
   //check if the block has another trial
