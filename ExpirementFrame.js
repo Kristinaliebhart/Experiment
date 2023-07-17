@@ -122,7 +122,7 @@ class ExperimentFrame {
       if (this.loggedData.length > 0) {
         console.log(this.loggedData); // Überprüfen Sie, ob das Array Daten enthält
         this.generateCSVFile();
-        alert("Die Aufgaben sind abgeschlossen. Das CSV-Datei-Generierungsfenster wird angezeigt. Bitte schließen Sie das Fenster manuell.");
+        //alert("Die Aufgaben sind abgeschlossen. Das CSV-Datei-Generierungsfenster wird angezeigt. Bitte schließen Sie das Fenster manuell.");
       } else {
         alert("Es liegen keine Daten zum Generieren der CSV-Datei vor.");
       }
@@ -176,21 +176,15 @@ class ExperimentFrame {
   
   generateCSVFile() {
     const csv = this.convertToCSV(this.loggedData);
-
-
-    // Create a Blob with the CSV data
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-
-    // Create a download URL for the Blob
+    
     const url = URL.createObjectURL(blob);
-
-    // Create a link element and set its attributes
     const link = document.createElement("a");
+    const fileName = `Experiment_Person_${this.personId}.csv`;
+  
     link.href = url;
-    link.download = "task_data.csv";
-
-    // Simulate a click on the link element to trigger the download
+    link.download = fileName;
+  
     link.click();
   }
-
 }
