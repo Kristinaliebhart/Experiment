@@ -116,7 +116,6 @@ class STRectsDrawing {
     }
     this.printToConsole();
   }
-  
 
   handleCanvasClick(event) {
     const canvas = document.getElementById("trialCanvas");
@@ -134,76 +133,62 @@ class STRectsDrawing {
     const startY = centerY + amplitudePx * Math.sin(this.startIndex * angle);
     const targetX = centerX + amplitudePx * Math.cos(this.targetIndex * angle);
     const targetY = centerY + amplitudePx * Math.sin(this.targetIndex * angle);
-
+  
     const startPx = mm2px(this.startSize);
-    const targetWidthPx = mm2px(this.targetWidth); // Width of the target rectangle
-    const targetHeightPx = mm2px(this.targetHeight); // Height of the target rectangle
-
-    const distanceTotarget = Math.sqrt((x - targetX) ** 2 + (y - targetY) ** 2);
+    const targetWidthPx = mm2px(this.targetWidth);
+    const targetHeightPx = mm2px(this.targetHeight);
+  
+    const distanceToTarget = Math.sqrt((x - targetX) ** 2 + (y - targetY) ** 2);
     const distanceToStart = Math.sqrt((x - startX) ** 2 + (y - startY) ** 2);
   
-    
     if (!this.startClicked && distanceToStart < startPx / 2) {
-      // Clicked on the start 
+      // click start
       this.startTime = new Date();
-      context.fillStyle = "rgba(0, 0, 139, 0.8)"; // Dark blue color
-      
-
+      context.fillStyle = "rgba(0, 0, 139, 0.8)"; // darkblue
+  
       context.beginPath();
       if (this.shape === "rectangle") {
-        context.fillRect(targetX - targetWidthPx / 2, targetY - targetHeightPx / 2, targetWidthPx, targetHeightPx);
+        context.fillRect(
+          targetX - targetWidthPx / 2,
+          targetY - targetHeightPx / 2,
+          targetWidthPx,
+          targetHeightPx
+        );
       } else if (this.shape === "circle") {
         const startSizePx = mm2px(this.startSize) / 2;
-        context.arc( startX, startY, startSizePx, 0, 2 * Math.PI );
+        context.arc(startX, startY, startSizePx, 0, 2 * Math.PI);
         context.fill();
       }
       this.startClicked = true;
+    } else if (this.startClicked) {
     
-    } else {
-      // Clicked outside the start 
-      const targetX = centerX + amplitudePx * Math.cos(this.targetIndex * angle);
-      const targetY = centerY + amplitudePx * Math.sin(this.targetIndex * angle);
-
-      const targetSize = this.shape === "rectangle"
-        ? Math.max(mm2px(this.targetWidth), mm2px(this.targetHeight))
-        : mm2px(this.targetWidth) / 2;
-      const distanceToTarget = Math.sqrt((x - targetX) ** 2 + (y - targetY) ** 2);
-  
-      if (this.startClicked && !this.isTargetClicked && distanceToTarget < targetSize) {
-        // Clicked on the target 
+      if (!this.isTargetClicked && distanceToTarget < targetWidthPx / 2) {
+        // click on target
         this.endTime = new Date();
         context.beginPath();
         if (this.shape === "rectangle") {
-          context.fillStyle = "rgba(0, 0, 139, 0.8)"; // Dark blue color for target 
+          context.fillStyle = "rgba(0, 0, 139, 0.8)"; // darkblue for target
           context.fillRect(
-            targetX - this.targetWidthPX / 2,
-            targetY - this.targetHeightPX / 2,
-            this.targetWidthPX,
-            this.targetHeightpX
+            targetX - targetWidthPx / 2,
+            targetY - targetHeightPx / 2,
+            targetWidthPx,
+            targetHeightPx
           );
         } else if (this.shape === "circle") {
-          context.fillStyle = "rgba(0, 0, 139, 0.8)"; // Dark blue color for target 
-          context.arc(
-            targetX,
-            targetY,
-            targetSize,
-            0,
-            2 * Math.PI
-          );
+          context.fillStyle = "rgba(0, 0, 139, 0.8)"; // darkblue for target
+          context.arc(targetX, targetY, targetWidthPx / 2, 0, 2 * Math.PI);
           context.fill();
         }
         this.logData();
         this.onTargetClicked();
         this.isTargetClicked = true;
-       
-      }else{
-        this.wrongClicks++
+      } else {
+        //count wrong clicks
+        this.wrongClicks++;
       }
-
     }
-
-   
   }
+  
 
   logData() {
     const data = {
@@ -222,7 +207,7 @@ class STRectsDrawing {
 
     };
 
-    this.loggedData.push(data); // Daten zum Array hinzufügen
+    this.loggedData.push(data); // add data to array
   }
   
   printToConsole(){
