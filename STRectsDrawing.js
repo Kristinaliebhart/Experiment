@@ -19,6 +19,8 @@ class STRectsDrawing {
     this.trialNumber = trialNumber;
     this.intDevice = trial.intDevice;
     this.personId = personId; //for each person a unique id
+    this.startTime = null;
+    this.endTime = null;
   }
 
   generatePersonId() {
@@ -140,6 +142,7 @@ class STRectsDrawing {
   
     if (!this.startClicked && distanceToStart < startPx / 2) {
       // Clicked on the start 
+      this.startTime = new Date();
       context.fillStyle = "rgba(0, 0, 139, 0.8)"; // Dark blue color
       
 
@@ -164,6 +167,7 @@ class STRectsDrawing {
   
       if (this.startClicked && !this.isTargetClicked && distanceToTarget < targetSize) {
         // Clicked on the target 
+        this.endTime = new Date();
         context.beginPath();
         if (this.shape === "rectangle") {
           context.fillStyle = "rgba(0, 0, 139, 0.8)"; // Dark blue color for target 
@@ -206,7 +210,8 @@ class STRectsDrawing {
       targetHeight: this.targetHeight,
       shape: this.shape,
       intDevice: this.intDevice,
-      amplitude: this.amplitude
+      amplitude: this.amplitude,
+      duration: (this.endTime - this.startTime) / 1000 
 
     };
 
