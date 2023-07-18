@@ -21,6 +21,8 @@ class STRectsDrawing {
     this.personId = personId; //for each person a unique id
     this.startTime = null;
     this.endTime = null;
+    this.wrongClicks = 0;
+  
   }
 
   generatePersonId() {
@@ -140,6 +142,7 @@ class STRectsDrawing {
     const distanceTotarget = Math.sqrt((x - targetX) ** 2 + (y - targetY) ** 2);
     const distanceToStart = Math.sqrt((x - startX) ** 2 + (y - startY) ** 2);
   
+    
     if (!this.startClicked && distanceToStart < startPx / 2) {
       // Clicked on the start 
       this.startTime = new Date();
@@ -155,6 +158,7 @@ class STRectsDrawing {
         context.fill();
       }
       this.startClicked = true;
+    
     } else {
       // Clicked outside the start 
       const targetX = centerX + amplitudePx * Math.cos(this.targetIndex * angle);
@@ -192,6 +196,8 @@ class STRectsDrawing {
         this.onTargetClicked();
         this.isTargetClicked = true;
        
+      }else{
+        this.wrongClicks++
       }
 
     }
@@ -211,7 +217,8 @@ class STRectsDrawing {
       shape: this.shape,
       intDevice: this.intDevice,
       amplitude: this.amplitude,
-      duration: (this.endTime - this.startTime) / 1000 
+      duration: (this.endTime - this.startTime) / 1000,
+      wrongClicks: this.wrongClicks
 
     };
 
