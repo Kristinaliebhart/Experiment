@@ -1,31 +1,11 @@
-
-// Calculate the radius in pixels
-function mm2px(valueMM){
-
-  // Get the PPI of the screen
-
-//for ipad: alles löschen außer das in den /* */
-// const dpi = 265;
-//resolution: 2048x2732
-//inches: 12.9
-
-
-//IPAD PRO
-const ppi = 265; // set the dpi to 265
-  const inches = valueMM / 25.4; // convert mm to inches
-  const valuePx = inches * ppi * window.devicePixelRatio; // calculate pixels
-  return valuePx;
-  
-
-
-//Laptop
- /* const ppi = window.devicePixelRatio * 96; // assuming a default DPI of 96
-  // Convert  mm to pixels
+function mm2px(valueMM, ppi) {
+  // Convert mm to pixels
   const valuePx = valueMM * (ppi / 25.4);
   return valuePx;
-
-  */
 }
 
-//test
-
+// Für das iPad Pro 12,9 Zoll (5. Generation) mit 264 PPI
+const ipadProPPI = 264;
+const valueInMM = 10; // Beispielwert in Millimetern
+const valueInPixels = mm2px(valueInMM, ipadProPPI);
+console.log(valueInPixels); // Ausgabe des Wertes in Pixeln für das iPad Pro 12,9 Zoll (5. Generation)
