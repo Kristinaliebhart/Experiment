@@ -25,6 +25,20 @@ class STRectsDrawing {
   
   }
 
+  getDirection(startIndex) {
+    if ([12, 1, 2].includes(startIndex)) {
+      return 'left';
+    } else if ([3, 4, 5].includes(startIndex)) {
+      return 'up';
+    } else if ([6, 7, 8].includes(startIndex)) {
+      return 'right';
+    } else if ([9, 10, 11].includes(startIndex)) {
+      return 'down';
+    } else {
+      return 'unknown';
+    }
+  }
+
   generatePersonId() {
     const alphabet = 'abcdefghijklmnopqrstuvwxyz';
     const randomLetter = alphabet[Math.floor(Math.random() * alphabet.length)];
@@ -196,7 +210,7 @@ class STRectsDrawing {
     const data = {
       trialNumber: this.trialNumber,
       personId: this.personId,
-      trialDirection: this.trialDirection,
+     // trialDirection: this.trialDirection,
       startIndex: this.startIndex,
       targetIndex: this.targetIndex,
       targetWidth: this.targetWidth,
@@ -205,7 +219,8 @@ class STRectsDrawing {
       intDevice: this.intDevice,
       amplitude: this.amplitude,
       duration: (this.endTime - this.startTime) / 1000,
-      wrongClicks: this.wrongClicks
+      wrongClicks: this.wrongClicks,
+      direction: this.getDirection(this.startIndex),
 
     };
 
