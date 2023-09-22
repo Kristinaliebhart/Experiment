@@ -34,12 +34,11 @@ class STRectsDrawing {
   }
 
   showRects() {
-      
     const canvas = document.getElementById("trialCanvas");
     const context = canvas.getContext("2d");
-
+  
     let startSizePx = 0;
-
+  
     let startX = 0;
     let startY = 0;
   
@@ -50,10 +49,16 @@ class STRectsDrawing {
     canvas.removeEventListener("click", this.handleCanvasClick);
     canvas.addEventListener("click", this.handleCanvasClick);
   
+    // Mittelpunkt des Canvas zeichnen
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
+    const centerSize = 5; // Größe des Mittelpunkts
+  
+    context.fillStyle = "red"; // Farbe des Mittelpunkts
+    context.fillRect(centerX - centerSize / 2, centerY - centerSize / 2, centerSize, centerSize);
+  
     const amplitudePx = mm2px(this.amplitude);
-    const angle = (2 * Math.PI) / this.nums;
+    const angle = (2 * Math.PI) / 12; // Änderung: Wir teilen den Kreis in 12 Positionen auf
   
     context.strokeStyle = "black";
   
@@ -62,8 +67,8 @@ class STRectsDrawing {
     const startColor = "rgba(144, 238, 144, 0.8)";
     context.fillStyle = startColor;
   
-    startX = centerX + amplitudePx * Math.cos(this.startIndex * angle);
-    startY = centerY + amplitudePx * Math.sin(this.startIndex * angle);
+    startX = centerX + amplitudePx * Math.cos((this.startIndex - 1) * angle);
+    startY = centerY + amplitudePx * Math.sin((this.startIndex - 1) * angle);
   
     if (this.shape === "rectangle") {
       context.strokeRect(
@@ -88,13 +93,13 @@ class STRectsDrawing {
     const targetColor = "rgba(255, 102, 102, 0.8)";
     context.fillStyle = targetColor;
   
-    const targetX = centerX + amplitudePx * Math.cos(this.targetIndex * angle);
-    const targetY = centerY + amplitudePx * Math.sin(this.targetIndex * angle);
+    const targetX = centerX + amplitudePx * Math.cos((this.targetIndex - 1) * angle);
+    const targetY = centerY + amplitudePx * Math.sin((this.targetIndex - 1) * angle);
   
     if (this.shape === "rectangle") {
       this.targetWidthPx = mm2px(this.targetWidth);
       this.targetHeightPx = mm2px(this.targetHeight);
-        
+  
       context.strokeRect(
         targetX - this.targetWidthPx / 2,
         targetY - this.targetHeightPx / 2,
@@ -103,20 +108,21 @@ class STRectsDrawing {
       );
       context.fillRect(
         targetX - this.targetWidthPx / 2,
-        targetY - this.targetHeightPx  / 2,
+        targetY - this.targetHeightPx / 2,
         this.targetWidthPx,
         this.targetHeightPx
       );
     } else if (this.shape === "circle") {
-      targetSize = mm2px(this.targetWidth);
+      const targetSize = mm2px(this.targetWidth);
       context.beginPath();
       context.arc(targetX, targetY, targetSize / 2, 0, 2 * Math.PI);
       context.stroke();
       context.fill();
     }
+  
     this.printToConsole();
   }
-
+  
   handleCanvasClick(event) {
     const canvas = document.getElementById("trialCanvas");
     const context = canvas.getContext("2d");
@@ -127,12 +133,12 @@ class STRectsDrawing {
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
     const amplitudePx = mm2px(this.amplitude);
-    const angle = (2 * Math.PI) / this.nums;
+    const angle = (2 * Math.PI) / 12; // Änderung: Wir teilen den Kreis in 12 Positionen auf
   
-    const startX = centerX + amplitudePx * Math.cos(this.startIndex * angle);
-    const startY = centerY + amplitudePx * Math.sin(this.startIndex * angle);
-    const targetX = centerX + amplitudePx * Math.cos(this.targetIndex * angle);
-    const targetY = centerY + amplitudePx * Math.sin(this.targetIndex * angle);
+    const startX = centerX + amplitudePx * Math.cos((this.startIndex - 1) * angle);
+    const startY = centerY + amplitudePx * Math.sin((this.startIndex - 1) * angle);
+    const targetX = centerX + amplitudePx * Math.cos((this.targetIndex - 1) * angle);
+    const targetY = centerY + amplitudePx * Math.sin((this.targetIndex - 1) * angle);
   
     const startPx = mm2px(this.startSize);
     const targetWidthPx = mm2px(this.targetWidth);
@@ -142,9 +148,8 @@ class STRectsDrawing {
     const distanceToStart = Math.sqrt((x - startX) ** 2 + (y - startY) ** 2);
   
     if (!this.startClicked && distanceToStart < startPx / 2) {
-      // click start
       this.startTime = new Date();
-      context.fillStyle = "rgba(0, 0, 139, 0.8)"; // darkblue
+      context.fillStyle = "rgba(0, 0, 139, 0.8)";
   
       context.beginPath();
       if (this.shape === "rectangle") {
@@ -161,13 +166,11 @@ class STRectsDrawing {
       }
       this.startClicked = true;
     } else if (this.startClicked) {
-    
       if (!this.isTargetClicked && distanceToTarget < targetWidthPx / 2) {
-        // click on target
         this.endTime = new Date();
         context.beginPath();
         if (this.shape === "rectangle") {
-          context.fillStyle = "rgba(0, 0, 139, 0.8)"; // darkblue for target
+          context.fillStyle = "rgba(0, 0, 139, 0.8)";
           context.fillRect(
             targetX - targetWidthPx / 2,
             targetY - targetHeightPx / 2,
@@ -175,7 +178,7 @@ class STRectsDrawing {
             targetHeightPx
           );
         } else if (this.shape === "circle") {
-          context.fillStyle = "rgba(0, 0, 139, 0.8)"; // darkblue for target
+          context.fillStyle = "rgba(0, 0, 139, 0.8)";
           context.arc(targetX, targetY, targetWidthPx / 2, 0, 2 * Math.PI);
           context.fill();
         }
@@ -183,12 +186,11 @@ class STRectsDrawing {
         this.onTargetClicked();
         this.isTargetClicked = true;
       } else {
-        //count wrong clicks
         this.wrongClicks++;
       }
     }
   }
-  
+     
 
   logData() {
     const data = {

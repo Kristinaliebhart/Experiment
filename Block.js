@@ -1,80 +1,60 @@
 class Block {
   constructor(blockNumber, experimentType, shape, intDevice, rectsize, startSize, numRects ) {
     this.shape = shape;
-    //this.targetHeight = [4, 8, 10, 15 , 6, 8, 10, 12, 16, 20, 15, 20, 25, 4, 4, 4, 8, 8, 8, 10, 10, 10];
-  // this.targetWidth =   [4 , 8 , 10, 15 , 4, 4 , 4 , 8 , 8 , 8 , 10, 10, 10, 6, 8, 10, 12, 16, 20, 15, 20, 25];
     this.targetHeight = [4, 8];
     this.targetWidth = [4, 3];
+    this.amplitude = [33, 50];
+    this.trialDirection = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']; // 12 Richtungen für 12 Indizes
 
-   
-   this.amplitude = [33 , 50];
-   //this.amplitude = [33];
-    this.trialDirection = ['Left', 'Up', 'Right', 'Down']; //  Direction of the required interaction
     this.intDevice = intDevice;
     this.blockNumber = blockNumber;
     this.experimentType = experimentType;
     this.startSize = startSize;
     this.numRects = numRects;
     this.rectsize = rectsize;
-    this.trialId = 0; // Initialize the trial ID
-
+    this.trialId = 0;
     this.currentstartIndex = null;
     this.currentTargetIndex = null;
     this.trialsNum = this.targetWidth.length * this.trialDirection.length * this.amplitude.length;
-   
-
-
     this.usedIndices = [];
     this.rectIndices = [];
+    
     for (let i = 0; i < this.numRects; i++) {
       this.rectIndices.push(i);
     }
-    
-    // Initialize an empty array to store the trials
-      this.trials = [];
 
-    // Nested loops to generate the trials
-      for (var i = 0; i < this.targetWidth.length; i++) { // loop to go through target width 
-          for (var k = 0; k < this.amplitude.length; k++) { // loop to go through Amplitude
-            for(var j=0; j<this.trialDirection.length; j++){ // loop to go through interaction direction
+    this.trials = [];
 
-              // check and assign startIndex, and TargetIndex for each direction
-              if(this.trialDirection[j] == 'Up'){
-                this.startIndex = 1 ; this.targetIndex = 3;
-              }
-              if(this.trialDirection[j] == 'Down'){
-                this.startIndex = 3 ; this.targetIndex = 1;
-              }
-              if(this.trialDirection[j] == 'Right'){
-                this.startIndex = 2 ; this.targetIndex = 0;
-              }
-              if(this.trialDirection[j] == 'Left'){
-                this.startIndex = 0 ; this.targetIndex = 2;
-              }
-           
-            // Create a trial object with the current combination of values
-              const trial = new Trial(
-              this.trialId,
-              this.shape,
-              this.trialDirection[j],
-              this.intDevice,
-              this.startIndex,
-              this.targetIndex,
-              this.startSize,
-              this.targetWidth[i],
-              this.targetHeight[i],
-              this.amplitude[k]
-            );
+    for (var i = 0; i < this.targetWidth.length; i++) {
+      for (var k = 0; k < this.amplitude.length; k++) {
+        for(var j=0; j<this.trialDirection.length; j++){
 
-            // Add the trial object to the trials array
-                this.trials.push(trial);
-                this.trialId++; // Increment the trial number
+          // Updated index mapping basierend auf den 12 Indizes
+          this.startIndex = j + 1;
+          this.targetIndex = (j + 7) % 12 + 1;
+
+          const trial = new Trial(
+            this.trialId,
+            this.shape,
+            this.trialDirection[j],
+            this.intDevice,
+            this.startIndex,
+            this.targetIndex,
+            this.startSize,
+            this.targetWidth[i],
+            this.targetHeight[i],
+            this.amplitude[k]
+          );
+
+          this.trials.push(trial);
+          this.trialId++;
+        }
       }
     }
-    }
-      // Shuffle the trials array randomly
-         this.shuffleArray(this.trials);
-}
+
+    // Shuffle the trials array randomly
+    this.shuffleArray(this.trials);
+  }
 
 // return trial
   getTrial(trialNumber) {
