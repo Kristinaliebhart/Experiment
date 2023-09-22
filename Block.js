@@ -4,8 +4,7 @@ class Block {
     this.targetHeight = [4, 8];
     this.targetWidth = [4, 3];
     this.amplitude = [33, 50];
-    this.trialDirection = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']; // 12 Richtungen für 12 Indizes
-
+    this.trialDirection = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
     this.intDevice = intDevice;
     this.blockNumber = blockNumber;
     this.experimentType = experimentType;
@@ -18,7 +17,7 @@ class Block {
     this.trialsNum = this.targetWidth.length * this.trialDirection.length * this.amplitude.length;
     this.usedIndices = [];
     this.rectIndices = [];
-    
+
     for (let i = 0; i < this.numRects; i++) {
       this.rectIndices.push(i);
     }
@@ -27,11 +26,10 @@ class Block {
 
     for (var i = 0; i < this.targetWidth.length; i++) {
       for (var k = 0; k < this.amplitude.length; k++) {
-        for(var j=0; j<this.trialDirection.length; j++){
+        for (var j = 0; j < this.trialDirection.length; j++) {
 
-          // Updated index mapping basierend auf den 12 Indizes
           this.startIndex = j + 1;
-          this.targetIndex = (j + 7) % 12 + 1;
+          this.targetIndex = (j + 6) % 12 + 1; 
 
           const trial = new Trial(
             this.trialId,
