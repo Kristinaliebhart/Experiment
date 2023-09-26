@@ -39,6 +39,10 @@ class STRectsDrawing {
     }
   }
 
+   calculateEuclideanDistance(x1, y1, x2, y2) {
+    return Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2);
+  }
+
   generatePersonId() {
     const alphabet = 'abcdefghijklmnopqrstuvwxyz';
     const randomLetter = alphabet[Math.floor(Math.random() * alphabet.length)];
@@ -251,6 +255,7 @@ class STRectsDrawing {
       startY: roundedStartY,
       targetX: roundedTargetX,
       targetY: roundedTargetY,
+      EuclideanDistancePx: this.calculateEuclideanDistance(startPixelX, startPixelY, targetPixelX, targetPixelY).toFixed(2)
     
     
       
