@@ -150,9 +150,12 @@ class STRectsDrawing {
     const angle = (2 * Math.PI) / 12; // Änderung: Wir teilen den Kreis in 12 Positionen auf
   
     const startX = centerX + amplitudePx * Math.cos((this.startIndex - 1) * angle);
+    console.log("StartX" + startX);
     const startY = centerY + amplitudePx * Math.sin((this.startIndex - 1) * angle);
     const targetX = centerX + amplitudePx * Math.cos((this.targetIndex - 1) * angle);
     const targetY = centerY + amplitudePx * Math.sin((this.targetIndex - 1) * angle);
+
+
   
     const startPx = mm2px(this.startSize);
     const targetWidthPx = mm2px(this.targetWidth);
@@ -178,6 +181,11 @@ class STRectsDrawing {
         context.arc(startX, startY, startSizePx, 0, 2 * Math.PI);
         context.fill();
       }
+  
+      this.startPixelX = x; // Verwenden Sie die äußere Variable
+      console.log("StartPixelX" + this.startPixelX);
+     
+      this.startPixelY = y; // Verwenden Sie die äußere Variable
       this.startClicked = true;
     } else if (this.startClicked) {
       if (!this.isTargetClicked && distanceToTarget < targetWidthPx / 2) {
@@ -196,7 +204,10 @@ class STRectsDrawing {
           context.arc(targetX, targetY, targetWidthPx / 2, 0, 2 * Math.PI);
           context.fill();
         }
-        this.logData();
+        const targetPixelX = x;
+        const targetPixelY = y;
+  
+        this.logData(this.startPixelX, this.startPixelY, targetPixelX, targetPixelY);
         this.onTargetClicked();
         this.isTargetClicked = true;
       } else {
@@ -209,11 +220,15 @@ class STRectsDrawing {
     return this.wrongClicks === 0 ? "correct" : "wrong";
   }
 
-  logData() {
+  logData(startPixelX, startPixelY, targetPixelX, targetPixelY) {
+
+   
+
+
     const data = {
       trialNumber: this.trialNumber,
       personId: this.personId,
-     // trialDirection: this.trialDirection,
+      // trialDirection: this.trialDirection,
       startIndex: this.startIndex,
       targetIndex: this.targetIndex,
       targetWidth: this.targetWidth,
@@ -225,12 +240,18 @@ class STRectsDrawing {
       wrongClicks: this.wrongClicks,
       direction: this.getDirection(this.startIndex),
       ClickOutcome: this.getClickOutcome(),
-
+      startPixelX: startPixelX,
+      startPixelY: startPixelY,
+      targetPixelX: targetPixelX,
+      targetPixelY: targetPixelY,
+    
+    
+      
     };
-
+  
     this.loggedData.push(data); // add data to array
   }
-  
+
   printToConsole(){
     console.log(
       "Information from Drawing: " +
