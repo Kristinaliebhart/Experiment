@@ -205,6 +205,9 @@ class STRectsDrawing {
     }
   }
      
+  getClickOutcome() {
+    return this.wrongClicks === 0 ? "correct" : "wrong";
+  }
 
   logData() {
     const data = {
@@ -221,6 +224,7 @@ class STRectsDrawing {
       duration: (this.endTime - this.startTime) / 1000,
       wrongClicks: this.wrongClicks,
       direction: this.getDirection(this.startIndex),
+      ClickOutcome: this.getClickOutcome(),
 
     };
 
