@@ -2,7 +2,7 @@ class Experiment {
   constructor() {
     this.experimentType = "STS"; // 
     this.shape = "rectangle"; // rectangle or circle
-    this.intDevice = "Mouse";  //"Mouse" , "Touch"  , "Laser Pointer" 
+    this.intDevice = "Stylus";  //"Mouse" , "Touch"  , "Laser Pointer" 
     this.startSize = 10;
     this.rectSize = this.startSize // set the size of the other reectangles
     this.blocks = [];
