@@ -155,7 +155,10 @@ class STRectsDrawing {
     const targetX = centerX + amplitudePx * Math.cos((this.targetIndex - 1) * angle);
     const targetY = centerY + amplitudePx * Math.sin((this.targetIndex - 1) * angle);
 
-
+    const roundedStartX = Math.round(startX);
+    const roundedStartY = Math.round(startY);
+    const roundedTargetX = Math.round(targetX);
+    const roundedTargetY = Math.round(targetY);
   
     const startPx = mm2px(this.startSize);
     const targetWidthPx = mm2px(this.targetWidth);
@@ -207,7 +210,7 @@ class STRectsDrawing {
         const targetPixelX = x;
         const targetPixelY = y;
   
-        this.logData(this.startPixelX, this.startPixelY, targetPixelX, targetPixelY);
+        this.logData(this.startPixelX, this.startPixelY, targetPixelX, targetPixelY, roundedStartX, roundedStartY, roundedTargetX, roundedTargetY);
         this.onTargetClicked();
         this.isTargetClicked = true;
       } else {
@@ -220,7 +223,7 @@ class STRectsDrawing {
     return this.wrongClicks === 0 ? "correct" : "wrong";
   }
 
-  logData(startPixelX, startPixelY, targetPixelX, targetPixelY) {
+  logData(startPixelX, startPixelY, targetPixelX, targetPixelY, roundedStartX, roundedStartY, roundedTargetX, roundedTargetY) {
 
    
 
@@ -244,6 +247,10 @@ class STRectsDrawing {
       startPixelY: startPixelY,
       targetPixelX: targetPixelX,
       targetPixelY: targetPixelY,
+      startX: roundedStartX,
+      startY: roundedStartY,
+      targetX: roundedTargetX,
+      targetY: roundedTargetY,
     
     
       
