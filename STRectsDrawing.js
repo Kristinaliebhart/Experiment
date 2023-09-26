@@ -255,8 +255,8 @@ class STRectsDrawing {
       startY: roundedStartY,
       targetX: roundedTargetX,
       targetY: roundedTargetY,
-      EuclideanDistancePx: this.calculateEuclideanDistance(startPixelX, startPixelY, targetPixelX, targetPixelY).toFixed(2)
-    
+      EuclideanDistanceClickedPx: this.calculateEuclideanDistance(startPixelX, startPixelY, targetPixelX, targetPixelY).toFixed(2),
+      EuclideanDistancMidPx: this.calculateEuclideanDistance(roundedStartX, roundedStartY, roundedTargetX, roundedTargetY).toFixed(2)
     
       
     };
