@@ -168,10 +168,10 @@ class STRectsDrawing {
     const Txmid = Math.round(targetX);
     const Tymid = Math.round(targetY);
 
-    const roundedStartX = startX;
-    const roundedStartY = startY;
-    const roundedTargetX =targetX;
-    const roundedTargetY = targetY;
+    const midStartX = startX;
+    const midStartY = startY;
+    const midTargetX =targetX;
+    const midTargetY = targetY;
    
   
     const startPx = mm2px(this.startSize);
@@ -224,7 +224,7 @@ class STRectsDrawing {
         const targetPixelX = x;
         const targetPixelY = y;
   
-        this.logData(this.startPixelX, this.startPixelY, targetPixelX, targetPixelY, roundedStartX, roundedStartY, roundedTargetX, roundedTargetY, Sxmid, Symid, Txmid, Tymid);
+        this.logData(this.startPixelX, this.startPixelY, targetPixelX, targetPixelY, midStartX, midStartY, midTargetX, midTargetY, Sxmid, Symid, Txmid, Tymid);
         this.onTargetClicked();
         this.isTargetClicked = true;
       } else {
@@ -237,7 +237,7 @@ class STRectsDrawing {
     return this.wrongClicks === 0 ? "correct" : "wrong";
   }
 
-  logData(startPixelX, startPixelY, targetPixelX, targetPixelY, roundedStartX, roundedStartY, roundedTargetX, roundedTargetY, Sxmid,Symid,Txmid,Tymid) {
+  logData(startPixelX, startPixelY, targetPixelX, targetPixelY, midStartX, midStartY, midTargetX, midTargetY, Sxmid,Symid,Txmid,Tymid) {
 
    
 
@@ -266,7 +266,7 @@ class STRectsDrawing {
       targetX: Txmid,
       targetY: Tymid,
       EuclideanDistanceClickedPx: this.calculateEuclideanDistance(startPixelX, startPixelY, targetPixelX, targetPixelY).toFixed(2),
-      EuclideanDistancMidPx: this.calculateEuclideanDistance(roundedStartX, roundedStartY, roundedTargetX, roundedTargetY).toFixed(2)
+      EuclideanDistancMidPx: this.calculateEuclideanDistance(midStartX, midStartY, midTargetX, midTargetY).toFixed(2)
     
       
     };
