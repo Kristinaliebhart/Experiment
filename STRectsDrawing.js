@@ -22,6 +22,7 @@ class STRectsDrawing {
     this.startTime = null;
     this.endTime = null;
     this.wrongClicks = 0;
+    this.positionClock = 'centered'; // 'random'; 
   
   }
 
@@ -67,12 +68,19 @@ class STRectsDrawing {
     canvas.removeEventListener("click", this.handleCanvasClick);
     canvas.addEventListener("click", this.handleCanvasClick);
   
-    // Mittelpunkt des Canvas zeichnen
-    const centerX = canvas.width / 2;
-    const centerY = canvas.height / 2;
+    
+   // Mittelpunkt des Canvas zeichnen
+    let centerX, centerY; 
+    if (this.positionClock === 'centered') {
+        centerX = canvas.width / 2;
+        centerY = canvas.height / 2;
+    } else if (this.positionClock === 'random') {
+      //TODO: implement logic for random position
+    }
+  
     const centerSize = 5; // Größe des Mittelpunkts
   
-    context.fillStyle = "red"; // Farbe des Mittelpunkts
+    context.fillStyle = "red"; // Farbe des Mittelpunkts TODO: später löschen
     context.fillRect(centerX - centerSize / 2, centerY - centerSize / 2, centerSize, centerSize);
   
     const amplitudePx = mm2px(this.amplitude);
