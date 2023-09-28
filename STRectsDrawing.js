@@ -76,6 +76,7 @@ class STRectsDrawing {
     const canvas = document.getElementById("trialCanvas");
     const context = canvas.getContext("2d");
 
+    //TODO: change in whole class to touchstart and touchend if used on ipad 
     canvas.addEventListener("mousedown", this.handleCanvasClick);
     canvas.addEventListener("mouseup", this.handleCanvasClick);
 
