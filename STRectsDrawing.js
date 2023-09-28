@@ -72,6 +72,9 @@ class STRectsDrawing {
     const canvas = document.getElementById("trialCanvas");
     const context = canvas.getContext("2d");
 
+    canvas.addEventListener("mousedown", this.handleCanvasClick);
+    canvas.addEventListener("mouseup", this.handleCanvasClick);
+
     let startSizePx = 0;
     let startX = 0;
 
@@ -195,7 +198,15 @@ handleCanvasClick(event) {
     const targetY = centerY + amplitudePx * Math.sin((this.targetIndex - 1) * angle); // Verwenden Sie centerY hier
 
    
-   
+   if (event.type === 'mousedown') {
+        // This is a click down event
+        // Handle it as needed
+        console.log("Mouse down at (" + x + ", " + y + ")");
+    } else if (event.type === 'mouseup') {
+        // This is a click up event
+        // Handle it as needed
+        console.log("Mouse up at (" + x + ", " + y + ")");
+    }
   
 
     //TODO: später diesse 4 Zeilen löschen und beim Loggen von sxmid Math.round anwenden
