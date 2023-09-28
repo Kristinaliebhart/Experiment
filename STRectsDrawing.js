@@ -31,6 +31,7 @@ class STRectsDrawing {
     this.endTimeStartRect = null;
     this.startTimeTargetRect = null;
     this.endTimeTargetRect = null;
+
     //CHANGE:
     this.clockCenter = 'random'; // centered or random
    
@@ -171,10 +172,47 @@ class STRectsDrawing {
 }
 
  formatTimeToHHMMSS(date) {
-  const stunde = date.getHours().toString().padStart(2, '0'); // Stunde (0-23)
+  const hour = date.getHours().toString().padStart(2, '0'); // Stunde (0-23)
   const minute = date.getMinutes().toString().padStart(2, '0'); // Minute (0-59)
-  const sekunde = date.getSeconds().toString().padStart(2, '0'); // Sekunde (0-59)
-  return `${stunde}:${minute}:${sekunde}`;
+  const second = date.getSeconds().toString().padStart(2, '0'); // Sekunde (0-59)
+  const millisecond = date.getMilliseconds().toString().padStart(3, '0'); // Millisekunde (0-999)
+  return `${hour}:${minute}:${second}:${millisecond}`;
+}
+
+calculateTargetDownStartDown() {
+  if (this.startTimeStartRect && this.endTimeTargetRect) {
+    const startTime = new Date(this.startTimeStartRect);
+    const endTime = new Date(this.endTimeTargetRect);
+    return endTime - startTime;
+  }
+  return null;
+}
+
+calculateTargetDownStartUp() {
+  if (this.endTimeStartRect && this.endTimeTargetRect) {
+    const startTime = new Date(this.endTimeStartRect);
+    const endTime = new Date(this.endTimeTargetRect);
+    return endTime - startTime;
+  }
+  return null;
+}
+
+calculateTargetUpStartDown() {
+  if (this.startTimeStartRect && this.startTimeTargetRect) {
+    const startTime = new Date(this.startTimeStartRect);
+    const endTime = new Date(this.startTimeTargetRect);
+    return endTime - startTime;
+  }
+  return null;
+}
+
+calculateTargetUpStartUp() {
+  if (this.endTimeStartRect && this.startTimeTargetRect) {
+    const startTime = new Date(this.startTimeTargetRect);
+    const endTime = new Date(this.endTimeStartRect);
+    return endTime - startTime;
+  }
+  return null;
 }
 
 handleCanvasClick(event) {
@@ -340,6 +378,10 @@ handleCanvasClick(event) {
       endTimeStartRect: this.endTimeStartRect,
       startTimeTargetRect: this.startTimeTargetRect,
       endTimeTargetRect: this.endTimeTargetRect,
+      targetDownStartDown: this.calculateTargetDownStartDown(),
+      targetDownStartUp: this.calculateTargetDownStartUp(),
+      targetUpStartDown:  this.calculateTargetUpStartDown(),
+      targetUpStartUp: this.calculateTargetUpStartUp()
     };
     this.loggedData.push(data); // add data to array
   }
