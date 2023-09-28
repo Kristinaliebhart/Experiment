@@ -87,12 +87,10 @@ class STRectsDrawing {
     console.log("CANVAS WIDTH" + canvas.width + "X" + canvas.height);
     context.clearRect(0, 0, canvas.width, canvas.height);
 
-    canvas.removeEventListener("click", this.handleCanvasClick);
-    canvas.addEventListener("click", this.handleCanvasClick);
+   // canvas.removeEventListener("click", this.handleCanvasClick);
+   // canvas.addEventListener("click", this.handleCanvasClick);
 
-
-   
-    // Calculate centerX and centerY regardless of clock center mode
+   // Calculate centerX and centerY regardless of clock center mode
     let centerX, centerY;
 
     if (this.clockCenter === 'random') {
@@ -171,12 +169,18 @@ class STRectsDrawing {
     this.printToConsole();
 }
 
+ formatTimeToHHMMSS(date) {
+  const stunde = date.getHours().toString().padStart(2, '0'); // Stunde (0-23)
+  const minute = date.getMinutes().toString().padStart(2, '0'); // Minute (0-59)
+  const sekunde = date.getSeconds().toString().padStart(2, '0'); // Sekunde (0-59)
+  return `${stunde}:${minute}:${sekunde}`;
+}
+
 handleCanvasClick(event) {
     console.log("Methode wird aufgerufen");
     const canvas = document.getElementById("trialCanvas");
     const context = canvas.getContext("2d");
    
-
     let centerX, centerY;
 
     if (this.clockCenter === 'random') {
@@ -187,12 +191,10 @@ handleCanvasClick(event) {
         centerY = canvas.height / 2;
     }
 
-   
     const rect = canvas.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
 
-  
     const amplitudePx = mm2px(this.amplitude);
     const angle = (2 * Math.PI) / 12;
 
@@ -201,22 +203,20 @@ handleCanvasClick(event) {
     const targetX = centerX + amplitudePx * Math.cos((this.targetIndex - 1) * angle); // Verwenden Sie centerX hier
     const targetY = centerY + amplitudePx * Math.sin((this.targetIndex - 1) * angle); // Verwenden Sie centerY hier
 
-   
-   if (event.type === 'mousedown') {
+   /*if (event.type === 'mouseup') {
         // This is a click down event
         // Handle it as needed
         console.log("Mouse down at (" + x + ", " + y + ")");
-    } else if (event.type === 'mouseup') {
-        // This is a click up event
-        // Handle it as needed
-        console.log("Mouse up at (" + x + ", " + y + ")");
+   }
+    if (event.type === 'mouseup') {
+      // This is a click down event
+      // Handle it as needed
+      console.log("Mouse down2 at (" + x + ", " + y + ")");
     }
-  
-
+    */
     //TODO: später diesse 4 Zeilen löschen und beim Loggen von sxmid Math.round anwenden
     //bzw. eventuell mehr Nachkommastellen loggen.
 
-  
     const Sxmid = Math.round(startX);
     const Symid = Math.round(startY);
     const Txmid = Math.round(targetX);
@@ -227,83 +227,87 @@ handleCanvasClick(event) {
     const midTargetX =targetX;
     const midTargetY = targetY;
    
-    
-  
     const startPx = mm2px(this.startSize);
     const targetWidthPx = mm2px(this.targetWidth);
     const targetHeightPx = mm2px(this.targetHeight);
 
-    
-  
     const distanceToTarget = Math.sqrt((x - targetX) ** 2 + (y - targetY) ** 2);
     const distanceToStart = Math.sqrt((x - startX) ** 2 + (y - startY) ** 2);
     console.log("DistanceToTarget: " + distanceToTarget);
-  
-    if (!this.startClicked && distanceToStart < startPx / 2) {
-      this.startTime = new Date();
-      context.fillStyle = "rgba(0, 0, 139, 0.8)";
-      console.log("DistanceToStart: " + distanceToStart);
-  
-      context.beginPath();
-      if (this.shape === "rectangle") {
-        context.fillRect(
-          targetX - targetWidthPx / 2,
-          targetY - targetHeightPx / 2,
-          targetWidthPx,
-          targetHeightPx
-        );
-      } else if (this.shape === "circle") {
-        const startSizePx = mm2px(this.startSize) / 2;
-        context.arc(startX, startY, startSizePx, 0, 2 * Math.PI);
-        context.fill();
-      }
-  
-      this.clickedStartPixelX = x; // Verwenden Sie die äußere Variable
-      console.log("StartPixelX" + this.clickedStartPixelX);
-     
-      this.clickedStartPixelY = y; // Verwenden Sie die äußere Variable
-      this.startClicked = true;
-    } else if (this.startClicked) {
-      if (!this.isTargetClicked && distanceToTarget < targetWidthPx / 2) {
-        this.endTime = new Date();
-        context.beginPath();
-        if (this.shape === "rectangle") {
+
+    //measure time for click down on start and target 
+    if (distanceToStart < startPx / 2 && event.type === 'mousedown' && event.type !== 'mouseup'){
+      // click down on start
+      this.startTimeStartRect = this.formatTimeToHHMMSS(new Date());
+  } else if (distanceToTarget < targetWidthPx / 2 && event.type === 'mousedown' && event.type !== 'mouseup') {
+      // click down on target
+      this.startTimeTargetRect = this.formatTimeToHHMMSS(new Date());
+  }
+    if (event.type === 'mouseup') {
+      if (!this.startClicked && distanceToStart < startPx / 2) {
+        
+          this.endTimeStartRect = this.formatTimeToHHMMSS(new Date());
           context.fillStyle = "rgba(0, 0, 139, 0.8)";
-          context.fillRect(
-            targetX - targetWidthPx / 2,
-            targetY - targetHeightPx / 2,
-            targetWidthPx,
-            targetHeightPx
-          );
-        } else if (this.shape === "circle") {
-          context.fillStyle = "rgba(0, 0, 139, 0.8)";
-          context.arc(targetX, targetY, targetWidthPx / 2, 0, 2 * Math.PI);
-          context.fill();
-        }
-        const clickedTargetPixelX = x;
-        const clickedTargetPixelY = y;
-  
-        this.logData(this.clickedStartPixelX, this.clickedStartPixelY, clickedTargetPixelX, clickedTargetPixelY, midStartX, midStartY, midTargetX, midTargetY, Sxmid, Symid, Txmid, Tymid);
-        this.onTargetClicked();
-        this.isTargetClicked = true;
-      } else {
-        this.wrongClicks++;
-        this.startY = startY;
-        this.startX = startX;
-        this.targetX = targetX;
-        this.targetY = targetY;
+          console.log("DistanceToStart: " + distanceToStart);
+
+          context.beginPath();
+          if (this.shape === "rectangle") {
+              context.fillRect(
+                  targetX - targetWidthPx / 2,
+                  targetY - targetHeightPx / 2,
+                  targetWidthPx,
+                  targetHeightPx
+              );
+          } else if (this.shape === "circle") {
+              const startSizePx = mm2px(this.startSize) / 2;
+              context.arc(startX, startY, startSizePx, 0, 2 * Math.PI);
+              context.fill();
+          }
+          this.clickedStartPixelX = x; 
+          console.log("StartPixelX" + this.clickedStartPixelX);
+          this.clickedStartPixelY = y;
+          this.startClicked = true;
       }
+  }  if (this.startClicked && event.type === "mouseup") {
+
+          if (!this.isTargetClicked && distanceToTarget < targetWidthPx / 2) {
+              console.log("STAR");
+              this.endTimeTargetRect = this.formatTimeToHHMMSS(new Date());
+              context.beginPath();
+              if (this.shape === "rectangle") {
+                  context.fillStyle = "rgba(0, 0, 139, 0.8)";
+                  context.fillRect(
+                      targetX - targetWidthPx / 2,
+                      targetY - targetHeightPx / 2,
+                      targetWidthPx,
+                      targetHeightPx
+                  );
+              } else if (this.shape === "circle") {
+                  context.fillStyle = "rgba(0, 0, 139, 0.8)";
+                  context.arc(targetX, targetY, targetWidthPx / 2, 0, 2 * Math.PI);
+                  context.fill();
+              }
+              const clickedTargetPixelX = x;
+              const clickedTargetPixelY = y;
+              this.logData(this.clickedStartPixelX, this.clickedStartPixelY, clickedTargetPixelX, clickedTargetPixelY, midStartX, midStartY, midTargetX, midTargetY, Sxmid, Symid, Txmid, Tymid);
+              this.onTargetClicked();
+
+              this.isTargetClicked = true;
+          } else {
+              this.wrongClicks++;
+              this.startY = startY;
+              this.startX = startX;
+              this.targetX = targetX;
+              this.targetY = targetY;
     }
   }
-     
+}
+    
   getClickOutcome() {
     return this.wrongClicks === 0 ? "correct" : "wrong";
   }
 
   logData(clickedStartPixelX, clickedStartPixelY, clickedTargetPixelX, clickedTargetPixelY, midStartX, midStartY, midTargetX, midTargetY, Sxmid,Symid,Txmid,Tymid) {
-
-   
-
 
     const data = {
       trialNumber: this.trialNumber,
@@ -335,10 +339,7 @@ handleCanvasClick(event) {
       endTimeStartRect: this.endTimeStartRect,
       startTimeTargetRect: this.startTimeTargetRect,
       endTimeTargetRect: this.endTimeTargetRect,
-    
-      
     };
-  
     this.loggedData.push(data); // add data to array
   }
 
@@ -372,6 +373,5 @@ handleCanvasClick(event) {
         this.trialDirection
     );
   }
-  
 }
 
