@@ -243,10 +243,10 @@ handleCanvasClick(event) {
         context.fill();
       }
   
-      this.startPixelX = x; // Verwenden Sie die äußere Variable
-      console.log("StartPixelX" + this.startPixelX);
+      this.clickedStartPixelX = x; // Verwenden Sie die äußere Variable
+      console.log("StartPixelX" + this.clickedStartPixelX);
      
-      this.startPixelY = y; // Verwenden Sie die äußere Variable
+      this.clickedStartPixelY = y; // Verwenden Sie die äußere Variable
       this.startClicked = true;
     } else if (this.startClicked) {
       if (!this.isTargetClicked && distanceToTarget < targetWidthPx / 2) {
@@ -265,10 +265,10 @@ handleCanvasClick(event) {
           context.arc(targetX, targetY, targetWidthPx / 2, 0, 2 * Math.PI);
           context.fill();
         }
-        const targetPixelX = x;
-        const targetPixelY = y;
+        const clickedTargetPixelX = x;
+        const clickedTargetPixelY = y;
   
-        this.logData(this.startPixelX, this.startPixelY, targetPixelX, targetPixelY, midStartX, midStartY, midTargetX, midTargetY, Sxmid, Symid, Txmid, Tymid);
+        this.logData(this.clickedStartPixelX, this.clickedStartPixelY, clickedTargetPixelX, clickedTargetPixelY, midStartX, midStartY, midTargetX, midTargetY, Sxmid, Symid, Txmid, Tymid);
         this.onTargetClicked();
         this.isTargetClicked = true;
       } else {
@@ -285,7 +285,7 @@ handleCanvasClick(event) {
     return this.wrongClicks === 0 ? "correct" : "wrong";
   }
 
-  logData(startPixelX, startPixelY, targetPixelX, targetPixelY, midStartX, midStartY, midTargetX, midTargetY, Sxmid,Symid,Txmid,Tymid) {
+  logData(clickedStartPixelX, clickedStartPixelY, clickedTargetPixelX, clickedTargetPixelY, midStartX, midStartY, midTargetX, midTargetY, Sxmid,Symid,Txmid,Tymid) {
 
    
 
@@ -305,15 +305,15 @@ handleCanvasClick(event) {
       wrongClicks: this.wrongClicks,
       direction: this.getDirection(this.startIndex),
       ClickOutcome: this.getClickOutcome(),
-      startPixelX: startPixelX,
-      startPixelY: startPixelY,
-      targetPixelX: targetPixelX,
-      targetPixelY: targetPixelY,
+      clickedStartPixelX: clickedStartPixelX,
+      clickedStartPixelY: clickedStartPixelY,
+      clickedTargetPixelX: clickedTargetPixelX,
+      clickedTargetPixelY: clickedTargetPixelY,
       startX: Sxmid,
       startY: Symid,
       targetX: Txmid,
       targetY: Tymid,
-      EuclideanDistanceClickedPx: this.calculateEuclideanDistance(startPixelX, startPixelY, targetPixelX, targetPixelY).toFixed(2),
+      EuclideanDistanceClickedPx: this.calculateEuclideanDistance(clickedStartPixelX, clickedStartPixelY, clickedTargetPixelX, clickedTargetPixelY).toFixed(2),
       EuclideanDistancMidPx: this.calculateEuclideanDistance(midStartX, midStartY, midTargetX, midTargetY).toFixed(2),
       ClockPosition: this.clockCenter
     
