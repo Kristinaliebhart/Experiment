@@ -27,6 +27,10 @@ class STRectsDrawing {
     this.randomCenterX = null;
     this.randomCenterY = null;
     this.initializeRandomCenter();
+    this.startTimeStartRect = null;
+    this.endTimeStartRect = null;
+    this.startTimeTargetRect = null;
+    this.endTimeTargetRect = null;
     //CHANGE:
     this.clockCenter = 'random'; // centered or random
    
@@ -326,7 +330,11 @@ handleCanvasClick(event) {
       targetY: Tymid,
       EuclideanDistanceClickedPx: this.calculateEuclideanDistance(clickedStartPixelX, clickedStartPixelY, clickedTargetPixelX, clickedTargetPixelY).toFixed(2),
       EuclideanDistancMidPx: this.calculateEuclideanDistance(midStartX, midStartY, midTargetX, midTargetY).toFixed(2),
-      ClockPosition: this.clockCenter
+      ClockPosition: this.clockCenter,
+      startTimeStartRect: this.startTimeStartRect,
+      endTimeStartRect: this.endTimeStartRect,
+      startTimeTargetRect: this.startTimeTargetRect,
+      endTimeTargetRect: this.endTimeTargetRect,
     
       
     };
