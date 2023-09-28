@@ -22,19 +22,23 @@ class STRectsDrawing {
     this.startTime = null;
     this.endTime = null;
     this.wrongClicks = 0;
-    this.clockCenter = 'random'; //CHAANGE TO centered or random
     this.targetY = 0;
     this.startY = 0;
     this.randomCenterX = null;
     this.randomCenterY = null;
     this.initializeRandomCenter();
+    //CHANGE:
+    this.clockCenter = 'random'; // centered or random
    
   }
   initializeRandomCenter() {
     const canvas = document.getElementById("trialCanvas");
     if (canvas) {
-      this.randomCenterX = Math.random() * canvas.width;
-      this.randomCenterY = Math.random() * canvas.height;
+      const canvasWidth = canvas.width;
+      const canvasHeight = canvas.height;
+      const margin = 200;
+      this.randomCenterX = margin + Math.random() * (canvasWidth - 2 * margin);
+      this.randomCenterY = margin + Math.random() * (canvasHeight - 2 * margin);
     }
   }
 
@@ -73,6 +77,7 @@ class STRectsDrawing {
 
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+    console.log("CANVAS WIDTH" + canvas.width + "X" + canvas.height);
     context.clearRect(0, 0, canvas.width, canvas.height);
 
     canvas.removeEventListener("click", this.handleCanvasClick);
@@ -309,7 +314,8 @@ handleCanvasClick(event) {
       targetX: Txmid,
       targetY: Tymid,
       EuclideanDistanceClickedPx: this.calculateEuclideanDistance(startPixelX, startPixelY, targetPixelX, targetPixelY).toFixed(2),
-      EuclideanDistancMidPx: this.calculateEuclideanDistance(midStartX, midStartY, midTargetX, midTargetY).toFixed(2)
+      EuclideanDistancMidPx: this.calculateEuclideanDistance(midStartX, midStartY, midTargetX, midTargetY).toFixed(2),
+      ClockPosition: this.clockCenter
     
       
     };
