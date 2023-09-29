@@ -41,7 +41,7 @@ class STRectsDrawing {
     this.targetYMouseUp = 0;
 
     //CHANGE:
-    this.clockCenter = 'random'; // centered or random
+    this.clockCenter = 'centered'; // centered or random
    
   }
   initializeRandomCenter() {
@@ -49,6 +49,7 @@ class STRectsDrawing {
     if (canvas) {
       const canvasWidth = canvas.width;
       const canvasHeight = canvas.height;
+      //TODO: CHANGE TO 200 margin if laptop is used
       const margin = 500;
       this.randomCenterX = margin + Math.random() * (canvasWidth - 2 * margin);
       this.randomCenterY = margin + Math.random() * (canvasHeight - 2 * margin);
