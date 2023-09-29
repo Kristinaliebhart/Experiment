@@ -86,8 +86,8 @@ class STRectsDrawing {
     const context = canvas.getContext("2d");
 
     //TODO: change in whole class to touchstart and touchend if used on ipad 
-    canvas.addEventListener("mousedown", this.handleCanvasClick);
-    canvas.addEventListener("mouseup", this.handleCanvasClick);
+    canvas.addEventListener("pointerdown", this.handleCanvasClick);
+    canvas.addEventListener("pointerup", this.handleCanvasClick);
 
     let startSizePx = 0;
     let startX = 0;
@@ -252,7 +252,7 @@ handleCanvasClick(event) {
   
 
     //measure time for click down on start and target 
-    if (distanceToStart < startPx / 2 && event.type === 'mousedown' && event.type !== 'mouseup'){
+    if (distanceToStart < startPx / 2 && event.type === 'pointerdown' && event.type !== 'pointerup'){
       // click down on start
       this.downStartrectTime = this.formatTimeToHHMMSS(new Date());
       this.startXMouseDown = x;
@@ -261,7 +261,7 @@ handleCanvasClick(event) {
       this.startYMouseDown = y;
       console.log("STARTYMOUSEDOWN" + this.startYMouseDown);
       
-  } else if (distanceToTarget < targetWidthPx / 2 && event.type === 'mousedown' && event.type !== 'mouseup') {
+  } else if (distanceToTarget < targetWidthPx / 2 && event.type === 'pointerdown' && event.type !== 'pointerup') {
       // click down on target
       this.downTargetrectTime = this.formatTimeToHHMMSS(new Date());
       this.targetXMouseDown = x;
@@ -269,7 +269,7 @@ handleCanvasClick(event) {
       this.targetYMouseDown = y;
       console.log("TARGETXMOUSEDOWN" + this.targetYMouseDown);
   }
-    if (event.type === 'mouseup') {
+    if (event.type === 'pointerup') {
       if (!this.startClicked && distanceToStart < startPx / 2) {
         
           this.upStartrectTime = this.formatTimeToHHMMSS(new Date());
@@ -298,10 +298,10 @@ handleCanvasClick(event) {
           this.startClicked = true;
         
       }
-      if (!this.startClicked && event.type === 'mouseup' && distanceToStart >= startPx / 2) {
+      if (!this.startClicked && event.type === 'pointerup' && distanceToStart >= startPx / 2) {
         this.playErrorSound();
     }
-  }  if (this.startClicked && event.type === "mouseup") {
+  }  if (this.startClicked && event.type === "pointerup") {
 
           if (!this.isTargetClicked && distanceToTarget < targetWidthPx / 2) {
               console.log("STAR");
@@ -370,7 +370,7 @@ handleCanvasClick(event) {
     Sxmid, Symid, Txmid, Tymid){
 
 
-     //TODO: CHANGE PPI IF NEEDED 
+     //TODO: CHANGE PPI IF NEEDED //66 for ipad, 90 for laptop
       const pixelSizeMM = 25.4 / 90;
       
 
