@@ -21,7 +21,7 @@ class STRectsDrawing {
     this.personId = personId; //for each person a unique id
     this.startTime = null;
     this.endTime = null;
-    this.wrongClicks = 0;
+    this.wrongClicks = -1;
     this.targetY = 0;
     this.startY = 0;
     this.randomCenterX = null;
@@ -344,9 +344,8 @@ handleCanvasClick(event) {
               this.isTargetClicked = true;
           } else {
 
-            if(!this.startClicked && !this.isTargetClicked){
+          
               this.wrongClicks++;
-          }
               this.startY = startY;
               this.startX = startX;
               this.targetX = targetX;
