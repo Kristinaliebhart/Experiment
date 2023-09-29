@@ -201,7 +201,10 @@ handleCanvasClick(event) {
     console.log("Methode wird aufgerufen");
     const canvas = document.getElementById("trialCanvas");
     const context = canvas.getContext("2d");
-   
+
+    console.log("CANVAS HEIGHT"+ canvas.height);
+    console.log("CANVAS WIDTH"+ canvas.width);
+
     let centerX, centerY;
 
     if (this.clockCenter === 'random') {
@@ -256,7 +259,7 @@ handleCanvasClick(event) {
       console.log("STARTXMOUSEDOWN" + this.startXMouseDown);
 
       this.startYMouseDown = y;
-      console.log("STARTYMOUSEDOWN" + thisstartYMouseDown);
+      console.log("STARTYMOUSEDOWN" + this.startYMouseDown);
       
   } else if (distanceToTarget < targetWidthPx / 2 && event.type === 'mousedown' && event.type !== 'mouseup') {
       // click down on target
