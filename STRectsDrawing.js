@@ -369,6 +369,11 @@ handleCanvasClick(event) {
     midStartX, midStartY, midTargetX, midTargetY,
     Sxmid, Symid, Txmid, Tymid){
 
+
+     //TODO: CHANGE PPI IF NEEDED 
+      const pixelSizeMM = 25.4 / 92;
+      
+
     const data = {
       trialNumber: this.trialNumber,
       personId: this.personId,
@@ -381,6 +386,7 @@ handleCanvasClick(event) {
       amplitude: this.amplitude,
       shape: this.shape,
       intDevice: this.intDevice,
+      pixelSizeMM: pixelSizeMM,
       wrongClicks: this.wrongClicks,
       ClickOutcome: this.getClickOutcome(),
       startXMouseDown: this.startXMouseDown,
