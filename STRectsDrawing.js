@@ -371,7 +371,7 @@ handleCanvasClick(event) {
 
 
      //TODO: CHANGE PPI IF NEEDED 
-      const pixelSizeMM = 25.4 / 92;
+      const pixelSizeMM = 25.4 / 90;
       
 
     const data = {

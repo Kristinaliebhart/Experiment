@@ -25,7 +25,7 @@ function mm2px(valueMM){
 function mm2px(valueMM){
 
   // Get the PPI of the screen
-  const ppi = window.devicePixelRatio * 132; // assuming a default DPI of 96
+  const ppi = window.devicePixelRatio * 90; // assuming a default DPI of 96
   // Convert  mm to pixels
   const valuePx = valueMM * (ppi / 25.4);
   const pixelSizeMM = 25.4 / ppi;
@@ -33,8 +33,3 @@ function mm2px(valueMM){
   return valuePx;
 }
 
-function resizeCanvas() {
-  const canvas = document.getElementById('trialCanvas');
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
