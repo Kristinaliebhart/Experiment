@@ -187,6 +187,14 @@ class STRectsDrawing {
   return `${hour}:${minute}:${second}:${millisecond}`;
 }
 
+async playErrorSound() {
+  try {
+    const audio = new Audio('/sounds/err1.wav'); 
+    await audio.play();
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
 
 
 handleCanvasClick(event) {
@@ -216,17 +224,7 @@ handleCanvasClick(event) {
     const targetX = centerX + amplitudePx * Math.cos((this.targetIndex - 1) * angle); // Verwenden Sie centerX hier
     const targetY = centerY + amplitudePx * Math.sin((this.targetIndex - 1) * angle); // Verwenden Sie centerY hier
 
-   /*if (event.type === 'mouseup') {
-        // This is a click down event
-        // Handle it as needed
-        console.log("Mouse down at (" + x + ", " + y + ")");
-   }
-    if (event.type === 'mouseup') {
-      // This is a click down event
-      // Handle it as neededs
-      console.log("Mouse down2 at (" + x + ", " + y + ")");
-    }
-    */
+   
     //TODO: später diesse 4 Zeilen löschen und beim Loggen von sxmid Math.round anwenden
     //bzw. eventuell mehr Nachkommastellen loggen.
 
@@ -295,7 +293,11 @@ handleCanvasClick(event) {
             this.startYMouseUp = y;
             console.log("startYMouseUp" + this.startYMouseUp);
           this.startClicked = true;
+        
       }
+      if (!this.startClicked && event.type === 'mouseup' && distanceToStart >= startPx / 2) {
+        this.playErrorSound();
+    }
   }  if (this.startClicked && event.type === "mouseup") {
 
           if (!this.isTargetClicked && distanceToTarget < targetWidthPx / 2) {
