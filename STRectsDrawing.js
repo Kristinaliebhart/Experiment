@@ -27,10 +27,10 @@ class STRectsDrawing {
     this.randomCenterX = null;
     this.randomCenterY = null;
     this.initializeRandomCenter();
-    this.startTimeStartRect = null;
-    this.endTimeStartRect = null;
-    this.startTimeTargetRect = null;
-    this.endTimeTargetRect = null;
+    this.downStartrectTime = null;
+    this.upStartrectTime = null;
+    this.downTargetrectTime = null;
+    this.upTargetrectTime = null;
 
     //CHANGE:
     this.clockCenter = 'random'; // centered or random
@@ -179,41 +179,7 @@ class STRectsDrawing {
   return `${hour}:${minute}:${second}:${millisecond}`;
 }
 
-calculateTargetDownStartDown() {
-  if (this.startTimeStartRect && this.endTimeTargetRect) {
-    const startTime = new Date(this.startTimeStartRect);
-    const endTime = new Date(this.endTimeTargetRect);
-    return endTime - startTime;
-  }
-  return null;
-}
 
-calculateTargetDownStartUp() {
-  if (this.endTimeStartRect && this.endTimeTargetRect) {
-    const startTime = new Date(this.endTimeStartRect);
-    const endTime = new Date(this.endTimeTargetRect);
-    return endTime - startTime;
-  }
-  return null;
-}
-
-calculateTargetUpStartDown() {
-  if (this.startTimeStartRect && this.startTimeTargetRect) {
-    const startTime = new Date(this.startTimeStartRect);
-    const endTime = new Date(this.startTimeTargetRect);
-    return endTime - startTime;
-  }
-  return null;
-}
-
-calculateTargetUpStartUp() {
-  if (this.endTimeStartRect && this.startTimeTargetRect) {
-    const startTime = new Date(this.startTimeTargetRect);
-    const endTime = new Date(this.endTimeStartRect);
-    return endTime - startTime;
-  }
-  return null;
-}
 
 handleCanvasClick(event) {
     console.log("Methode wird aufgerufen");
@@ -277,15 +243,15 @@ handleCanvasClick(event) {
     //measure time for click down on start and target 
     if (distanceToStart < startPx / 2 && event.type === 'mousedown' && event.type !== 'mouseup'){
       // click down on start
-      this.startTimeStartRect = this.formatTimeToHHMMSS(new Date());
+      this.downStartrectTime = this.formatTimeToHHMMSS(new Date());
   } else if (distanceToTarget < targetWidthPx / 2 && event.type === 'mousedown' && event.type !== 'mouseup') {
       // click down on target
-      this.startTimeTargetRect = this.formatTimeToHHMMSS(new Date());
+      this.downTargetrectTime = this.formatTimeToHHMMSS(new Date());
   }
     if (event.type === 'mouseup') {
       if (!this.startClicked && distanceToStart < startPx / 2) {
         
-          this.endTimeStartRect = this.formatTimeToHHMMSS(new Date());
+          this.upStartrectTime = this.formatTimeToHHMMSS(new Date());
           context.fillStyle = "rgba(0, 0, 139, 0.8)";
           console.log("DistanceToStart: " + distanceToStart);
 
@@ -311,7 +277,7 @@ handleCanvasClick(event) {
 
           if (!this.isTargetClicked && distanceToTarget < targetWidthPx / 2) {
               console.log("STAR");
-              this.endTimeTargetRect = this.formatTimeToHHMMSS(new Date());
+              this.upTargetrectTime = this.formatTimeToHHMMSS(new Date());
               context.beginPath();
               if (this.shape === "rectangle") {
                   context.fillStyle = "rgba(0, 0, 139, 0.8)";
@@ -374,17 +340,30 @@ handleCanvasClick(event) {
       EuclideanDistanceClickedPx: this.calculateEuclideanDistance(clickedStartPixelX, clickedStartPixelY, clickedTargetPixelX, clickedTargetPixelY).toFixed(2),
       EuclideanDistancMidPx: this.calculateEuclideanDistance(midStartX, midStartY, midTargetX, midTargetY).toFixed(2),
       ClockPosition: this.clockCenter,
-      startTimeStartRect: this.startTimeStartRect,
-      endTimeStartRect: this.endTimeStartRect,
-      startTimeTargetRect: this.startTimeTargetRect,
-      endTimeTargetRect: this.endTimeTargetRect,
-      targetDownStartDown: this.calculateTargetDownStartDown(),
-      targetDownStartUp: this.calculateTargetDownStartUp(),
-      targetUpStartDown:  this.calculateTargetUpStartDown(),
-      targetUpStartUp: this.calculateTargetUpStartUp()
+      downStartrectTime: this.downStartrectTime,
+      upStartrectTime: this.upStartrectTime,
+      downTargetrectTime: this.downTargetrectTime,
+      upTargetrectTime: this.upTargetrectTime,
+      durationDownStartToUpTarget: this.calculateDuration(this.downStartrectTime, this.upTargetrectTime),
+      durationDownStartToDownTarget: this.calculateDuration(this.downStartrectTime, this.downTargetrectTime),
+      durationUpStartToDownTarget: this.calculateDuration(this.upStartrectTime, this.downTargetrectTime),
+      durationUsStartToUpTarget: this.calculateDuration(this.upStartrectTime, this.upTargetrectTime),
+     
     };
     this.loggedData.push(data); // add data to array
   }
+
+  calculateDuration(startTime, endTime) {
+    if (startTime && endTime) {
+        const startParts = startTime.split(':').map(Number); 
+        const endParts = endTime.split(':').map(Number); 
+        const startMillis = startParts[0] * 3600000 + startParts[1] * 60000 + startParts[2] * 1000 + startParts[3]; 
+        const endMillis = endParts[0] * 3600000 + endParts[1] * 60000 + endParts[2] * 1000 + endParts[3]; 
+
+        return (endMillis - startMillis) / 1000; 
+    }
+    return null; 
+}
 
   printToConsole(){
     console.log(
