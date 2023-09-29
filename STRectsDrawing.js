@@ -31,6 +31,14 @@ class STRectsDrawing {
     this.upStartrectTime = null;
     this.downTargetrectTime = null;
     this.upTargetrectTime = null;
+    this.startXMouseDown = 0;
+    this.startYMouseDown = 0;
+    this.startXMouseUp = 0;
+    this.startYMouseUp = 0;
+    this.targetXMouseDown = 0;
+    this.targetYMouseDown = 0;
+    this.targetXMouseUp = 0;
+    this.targetYMouseUp = 0;
 
     //CHANGE:
     this.clockCenter = 'random'; // centered or random
@@ -215,7 +223,7 @@ handleCanvasClick(event) {
    }
     if (event.type === 'mouseup') {
       // This is a click down event
-      // Handle it as needed
+      // Handle it as neededs
       console.log("Mouse down2 at (" + x + ", " + y + ")");
     }
     */
@@ -240,13 +248,25 @@ handleCanvasClick(event) {
     const distanceToStart = Math.sqrt((x - startX) ** 2 + (y - startY) ** 2);
     console.log("DistanceToTarget: " + distanceToTarget);
 
+  
+
     //measure time for click down on start and target 
     if (distanceToStart < startPx / 2 && event.type === 'mousedown' && event.type !== 'mouseup'){
       // click down on start
       this.downStartrectTime = this.formatTimeToHHMMSS(new Date());
+      this.startXMouseDown = x;
+      console.log("STARTXMOUSEDOWN" + this.startXMouseDown);
+
+      this.startYMouseDown = y;
+      console.log("STARTYMOUSEDOWN" + thisstartYMouseDown);
+      
   } else if (distanceToTarget < targetWidthPx / 2 && event.type === 'mousedown' && event.type !== 'mouseup') {
       // click down on target
       this.downTargetrectTime = this.formatTimeToHHMMSS(new Date());
+      this.targetXMouseDown = x;
+      console.log("TARGETXMOUSEDOWN" + this.targetXMouseDown);
+      this.targetYMouseDown = y;
+      console.log("TARGETXMOUSEDOWN" + this.targetYMouseDown);
   }
     if (event.type === 'mouseup') {
       if (!this.startClicked && distanceToStart < startPx / 2) {
@@ -270,7 +290,10 @@ handleCanvasClick(event) {
           }
           this.clickedStartPixelX = x; 
           console.log("StartPixelX" + this.clickedStartPixelX);
-          this.clickedStartPixelY = y;
+          this.startXMouseUp = x;
+          console.log("startXMouseUp" + this.startXMouseUp);
+            this.startYMouseUp = y;
+            console.log("startYMouseUp" + this.startYMouseUp);
           this.startClicked = true;
       }
   }  if (this.startClicked && event.type === "mouseup") {
@@ -278,6 +301,10 @@ handleCanvasClick(event) {
           if (!this.isTargetClicked && distanceToTarget < targetWidthPx / 2) {
               console.log("STAR");
               this.upTargetrectTime = this.formatTimeToHHMMSS(new Date());
+              this.targetXMouseUp = x;
+              console.log("targetXMouseUp" + this.targetXMouseUp);
+              this.targetYMouseUp = y;
+              console.log("targetYMouseUp" + this.targetYMouseUp);
               context.beginPath();
               if (this.shape === "rectangle") {
                   context.fillStyle = "rgba(0, 0, 139, 0.8)";
@@ -294,12 +321,32 @@ handleCanvasClick(event) {
               }
               const clickedTargetPixelX = x;
               const clickedTargetPixelY = y;
-              this.logData(this.clickedStartPixelX, this.clickedStartPixelY, clickedTargetPixelX, clickedTargetPixelY, midStartX, midStartY, midTargetX, midTargetY, Sxmid, Symid, Txmid, Tymid);
+              this.logData(
+                this.startXMouseDown,
+                this.startYMouseDown,
+                this.startXMouseUp,
+                this.startYMouseUp,
+                this.targetXMouseDown,
+                this.targetYMouseDown,
+                this.targetXMouseUp,
+                this.targetYMouseUp,
+                midStartX,
+                midStartY,
+                midTargetX,
+                midTargetY,
+                Sxmid,
+                Symid,
+                Txmid,
+                Tymid
+            );
               this.onTargetClicked();
 
               this.isTargetClicked = true;
           } else {
+
+            if(!this.startClicked && !this.isTargetClicked){
               this.wrongClicks++;
+          }
               this.startY = startY;
               this.startX = startX;
               this.targetX = targetX;
@@ -312,7 +359,11 @@ handleCanvasClick(event) {
     return this.wrongClicks === 0 ? "correct" : "wrong";
   }
 
-  logData(clickedStartPixelX, clickedStartPixelY, clickedTargetPixelX, clickedTargetPixelY, midStartX, midStartY, midTargetX, midTargetY, Sxmid,Symid,Txmid,Tymid) {
+  logData(
+    startXMouseDown, startYMouseDown, startXMouseUp, startYMouseUp,
+    targetXMouseDown, targetYMouseDown, targetXMouseUp, targetYMouseUp,
+    midStartX, midStartY, midTargetX, midTargetY,
+    Sxmid, Symid, Txmid, Tymid){
 
     const data = {
       trialNumber: this.trialNumber,
@@ -325,20 +376,24 @@ handleCanvasClick(event) {
       shape: this.shape,
       intDevice: this.intDevice,
       amplitude: this.amplitude,
-      duration: (this.endTime - this.startTime) / 1000,
+     
       wrongClicks: this.wrongClicks,
       direction: this.getDirection(this.startIndex),
       ClickOutcome: this.getClickOutcome(),
-      clickedStartPixelX: clickedStartPixelX,
-      clickedStartPixelY: clickedStartPixelY,
-      clickedTargetPixelX: clickedTargetPixelX,
-      clickedTargetPixelY: clickedTargetPixelY,
+      startXMouseDown: this.startXMouseDown,
+      startYMouseDown: this.startYMouseDown,
+      startXMouseUp: this.startXMouseUp,
+      startYMouseUp: this.startYMouseUp,
+      targetXMouseDown: this.targetXMouseDown,
+      targetYMouseDown: this.targetYMouseDown,
+      targetXMouseUp: this.targetXMouseUp,
+      targetYMouseUp: this.targetYMouseUp,
       startX: Sxmid,
       startY: Symid,
       targetX: Txmid,
       targetY: Tymid,
-      EuclideanDistanceClickedPx: this.calculateEuclideanDistance(clickedStartPixelX, clickedStartPixelY, clickedTargetPixelX, clickedTargetPixelY).toFixed(2),
-      EuclideanDistancMidPx: this.calculateEuclideanDistance(midStartX, midStartY, midTargetX, midTargetY).toFixed(2),
+     // EuclideanDistanceClickedPx: this.calculateEuclideanDistance(clickedStartPixelX, clickedStartPixelY, clickedTargetPixelX, clickedTargetPixelY).toFixed(2),
+     // EuclideanDistancMidPx: this.calculateEuclideanDistance(midStartX, midStartY, midTargetX, midTargetY).toFixed(2),
       ClockPosition: this.clockCenter,
       downStartrectTime: this.downStartrectTime,
       upStartrectTime: this.upStartrectTime,
