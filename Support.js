@@ -17,3 +17,9 @@ function mm2px(valueMM){
   console.log("One pixel in mm:" + pixelSizeMM);
   return valuePx;
 }
+
+function resizeCanvas() {
+  const canvas = document.getElementById('trialCanvas');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}

@@ -54,7 +54,7 @@ class STRectsDrawing {
       this.randomCenterY = margin + Math.random() * (canvasHeight - 2 * margin);
     }
   }
-
+   
   getDirection(startIndex) {
     if ([12, 1, 2].includes(startIndex)) {
       return 'left';
