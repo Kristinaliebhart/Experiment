@@ -25,7 +25,7 @@ function mm2px(valueMM){
 function mm2px(valueMM){
 
   // Get the PPI of the screen
-  const ppi = window.devicePixelRatio * 66; // assuming a default DPI of 96
+  const ppi = window.devicePixelRatio * 66; //IPAD
   // Convert  mm to pixels
   const valuePx = valueMM * (ppi / 25.4);
   const pixelSizeMM = 25.4 / ppi;

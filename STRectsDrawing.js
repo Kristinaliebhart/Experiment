@@ -49,7 +49,7 @@ class STRectsDrawing {
     if (canvas) {
       const canvasWidth = canvas.width;
       const canvasHeight = canvas.height;
-      const margin = 200;
+      const margin = 300;
       this.randomCenterX = margin + Math.random() * (canvasWidth - 2 * margin);
       this.randomCenterY = margin + Math.random() * (canvasHeight - 2 * margin);
     }
