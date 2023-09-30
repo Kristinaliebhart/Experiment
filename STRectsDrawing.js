@@ -116,7 +116,7 @@ class STRectsDrawing {
     context.fillStyle = "red";
     context.fillRect(centerX - centerSize / 2, centerY - centerSize / 2, centerSize, centerSize);
 
-    const amplitudePx = mm2px(this.amplitude);
+    const amplitudePx = mm2px(this.amplitude/2);
     const angle = (2 * Math.PI) / 12;
 
     startSizePx = mm2px(this.startSize);
@@ -220,7 +220,7 @@ handleCanvasClick(event) {
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
 
-    const amplitudePx = mm2px(this.amplitude);
+    const amplitudePx = mm2px(this.amplitude/2);
     const angle = (2 * Math.PI) / 12;
 
     const startX = centerX + amplitudePx * Math.cos((this.startIndex - 1) * angle); // Verwenden Sie centerX hier
